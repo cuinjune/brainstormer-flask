@@ -9,7 +9,11 @@ from gevent.pywsgi import WSGIServer
 app = Flask(__name__)
 PORT = int(os.environ.get("PORT", 5000))
 
+print("loading spacy language model..")
+
 nlp = spacy.load("en_core_web_md")
+
+print("loading done")
 
 def load_words():
     with open("words_alpha.txt") as word_file:
@@ -22,12 +26,20 @@ all_words = load_words()
 def vec(word):
     return nlp(word, disable=["parser", "tagger", "ner"]).vector
 
+print("getting embeddings...")
+
 embeddings = [vec(w) for w in all_words]
+
+print("getting done")
+
+print("building simpleneibors...")
 
 lookup = SimpleNeighbors(300)
 for v, w in zip(embeddings, all_words):
     lookup.add_one(w, v)
 lookup.build()
+
+print("building done")
 
 def nearest_words(word, used_words):
     ws = [w for w in lookup.nearest(vec(word), 156) if w not in used_words][:5]
