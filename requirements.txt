@@ -1,4 +1,5 @@
 Flask
 gevent
 spacy
+annoy
 simpleneighbors
