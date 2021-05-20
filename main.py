@@ -74,11 +74,14 @@ def get_words(word):
 
 @app.route("/api/v1/flask/data", methods=["POST"])
 def postdata():
-    data = request.get_json()
-    word = data["word"]
-    # print("received word:", word)
+    body = request.get_json()
+    if "word" not in body:
+        return json.dumps({ "error": True, "message": "Input word not found" })
+    if type(body["word"]) != str or not body["word"]:
+        return json.dumps({ "error": True, "message": "Invalid input word" })
+    word = body["word"]
     words = get_words(word)
-    return json.dumps(words)
+    return json.dumps({ "words": words })
 
 if __name__ == "__main__":
     print("Listening on port:", PORT)
