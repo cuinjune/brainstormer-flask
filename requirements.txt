@@ -1,5 +1,5 @@
 Flask
 gevent
-spacy==2.3.4
+spacy
 annoy==1.16.3
 simpleneighbors==0.1.0
