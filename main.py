@@ -76,7 +76,7 @@ def get_words(word):
 def postdata():
     data = request.get_json()
     word = data["word"]
-    print("received word:", word)
+    # print("received word:", word)
     words = get_words(word)
     return json.dumps(words)
 
